@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('app_logout') }}" class="btn btn-danger">Logout</a>
+    </br>
+    <a href="{{ path('app_book_add') }}" class="btn btn-danger">Add book</a>
+    <h1>Authors List</h1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birthday</th>
+            <th>Gender</th>
+            <th>Place of Birth</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for author in authors %}
+            <tr>
+                <td>{{ author.id }}</td>
+                <td>{{ author.first_name }}</td>
+                <td>{{ author.last_name }}</td>
+                <td>{{ author.birthday|date('Y-m-d') }}</td>
+                <td>{{ author.gender }}</td>
+                <td>{{ author.place_of_birth }}</td>
+                <td>
+                    <a href="{{ path('app_author_view', { id: author.id }) }}">View</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {% if current_page > 1 %}
+            <a href="{{ path('app_authors', { page: current_page - 1 }) }}" class="btn">Previous</a>
+        {% endif %}
+
+        {% for i in 1..total_pages %}
+            {% if i == current_page %}
+                <span class="current">{{ i }}</span>
+            {% else %}
+                <a href="{{ path('app_authors', { page: i }) }}" class="btn">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if current_page < total_pages %}
+            <a href="{{ path('app_authors', { page: current_page + 1 }) }}" class="btn">Next</a>
+        {% endif %}
+    </div>
+
+{% endblock %}

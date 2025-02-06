@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('app_logout') }}" class="btn btn-danger">Logout</a>
+    </br>
+    <a href="{{ path('app_book_add') }}" class="btn btn-danger">Add book</a>
+    <h1>Author Details</h1>
+    {% if author.books is empty %}
+        <form method="post" action="{{ path('app_author_delete', { id: author.id }) }}">
+            <button type="submit" class="btn btn-danger">Delete Author</button>
+        </form>
+    {% endif %}
+    <div class="author-info">
+        <p><strong>ID:</strong> {{ author.id }}</p>
+        <p><strong>Name:</strong> {{ author.first_name }} {{ author.last_name }}</p>
+        <p><strong>Birthday:</strong> {{ author.birthday|date('Y-m-d') }}</p>
+        {% if author.biography is defined and author.biography is not empty %}
+            <p><strong>Biography:</strong> {{ author.biography }}</p>
+        {% endif %}
+        <p><strong>Gender:</strong> {{ author.gender }}</p>
+        <p><strong>Place of Birth:</strong> {{ author.place_of_birth }}</p>
+    </div>
+
+    <h2>Books</h2>
+    {% if author.books is not empty %}
+        <table border="1">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Release Date</th>
+                <th>Description</th>
+                <th>ISBN</th>
+                <th>Format</th>
+                <th>Pages</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for book in author.books %}
+                <tr>
+                    <td>{{ book.id }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>
+                        {% if book.release_date is defined %}
+                            {{ book.release_date|date('Y-m-d') }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ book.description }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.format }}</td>
+                    <td>{{ book.number_of_pages }}</td>
+                    <td>
+                        <form method="post" action="{{ path('app_book_delete', { id: book.id, author_id: author.id }) }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No books available for this author.</p>
+    {% endif %}
+
+    <a href="{{ path('app_authors') }}" class="btn btn-primary">Back to Authors</a>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Profile</h1>
+
+    <div class="profile-info">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>First Name:</strong> {{ user.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+        <p><strong>Joined At:</strong> {{ user.created_at|date('Y-m-d') }}</p>
+    </div>
+
+    <a href="{{ path('app_authors') }}" class="btn btn-danger">Authors</a>
+    </br>
+    <a href="{{ path('app_book_add') }}" class="btn btn-danger">Add book</a>
+    </br>
+    <a href="{{ path('app_logout') }}" class="btn btn-danger">Logout</a>
+{% endblock %}
